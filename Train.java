@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
-public class Train implements TrainRequirements{
+public class Train {
     /**
      * Attributes
      */
@@ -11,6 +11,7 @@ public class Train implements TrainRequirements{
     private int passengerCapacity;
     private Engine engine;
     private ArrayList<Car> cars;
+    public int manifestCallCount=0;
     /**
      * Constructor
      * @param fuelType
@@ -73,6 +74,7 @@ public class Train implements TrainRequirements{
     public void printManifest(){
         for (int i=1;i<this.nCars+1;i++){
             System.out.println("Car"+i+": ");
+            this.manifestCallCount++;
             this.getCar(i-1).printManifest();
         } 
     }
@@ -99,6 +101,7 @@ public class Train implements TrainRequirements{
                     onBoard=true;
                 }
             }
+            input.close();
         }
         else{
             System.out.println("Car currently full.");
@@ -129,18 +132,21 @@ public class Train implements TrainRequirements{
         System.out.println("What is your name: ");
         String name1=inputStr1.nextLine();
         Passenger p1=new Passenger(name1);
+        inputStr1.close();
         myTrain.boardTrain(p1);
         // take passenger 2
         Scanner inputStr2=new Scanner(System.in);
         System.out.println("What is your name: ");
         String name2=inputStr2.nextLine();
         Passenger p2=new Passenger(name2);
+        inputStr2.close();
         myTrain.boardTrain(p2);
         // take passenger 3
         Scanner inputStr3=new Scanner(System.in);
         System.out.println("What is your name: ");
         String name3=inputStr3.nextLine();
         Passenger p3=new Passenger(name3);
+        inputStr3.close();
         myTrain.boardTrain(p3);
         // print the current passengers on board, test if successfully added
         myTrain.printManifest();
