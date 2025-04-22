@@ -1,4 +1,4 @@
-class Engine implements EngineRequirements{
+public class Engine{
     /**
      * Attributes
      */
