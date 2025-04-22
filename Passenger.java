@@ -1,4 +1,4 @@
-class Passenger implements PassengerRequirements{
+public class Passenger{
     /**
      * Attributes
      */
@@ -7,8 +7,19 @@ class Passenger implements PassengerRequirements{
      * Constructor
      * @param name
      */
-    public Passenger(String name) {
+     public Passenger(String name) {
         this.name = name;
+    }
+    /**
+     * 
+     * @param c
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    
+    public void tryBoard(Car c) throws ArrayIndexOutOfBoundsException{
+        if (!c.addPassenger(this)){
+            throw new ArrayIndexOutOfBoundsException("Error: Car is full.");
+        }
     }
     /**
      * boardCar
@@ -16,24 +27,29 @@ class Passenger implements PassengerRequirements{
      * @return none
      */
     public void boardCar(Car c){
-        if (c.addPassenger(this)){
-            c.addPassenger(this);
+        try {
+            this.tryBoard(c);
         }
-        else{
-            System.out.println("Error: Car full.");
+        catch (ArrayIndexOutOfBoundsException e){
+            throw e;
+        }
+        }
+    public void tryGetOff(Car c) throws NullPointerException{
+        if (!c.removePassenger(this)){
+            throw new NullPointerException("Error: passenger not on board.");
         }
     }
     /**
-     * boardCar
+     * getOffCar
      * @param Car c
      * @return none
      */
-    public void getOffCar(Car c){
-        if (c.removePassenger(this)){
-            c.removePassenger(this);
-        }
-        else{
-            System.out.println("Error: Passenger not found.");
+    public void getOffCar(Car c) {
+        try {
+            this.tryGetOff(c);
+        } catch (NullPointerException e) {
+            throw e;
         }
     }
 }
+
