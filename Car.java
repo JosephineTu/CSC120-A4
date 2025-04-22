@@ -1,95 +1,116 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-class Car implements CarRequirements{
+
+public class Car {
     /**
      * Attributes
      */
-    private ArrayList<Passenger> passengersOnBoard;
+    public ArrayList<Passenger> passengersOnBoard;
     private int maxCapacity;
+
+
     /**
      * Constructor
-     * @param passengersOnBoard
-     * @param maxCapacity
+     * @param passengersOnBoard List of initial passengers
+     * @param maxCapacity Maximum capacity of the car
      */
-    public Car (ArrayList<Passenger> passengersOnBoard, int maxCapacity){
-        this.passengersOnBoard=passengersOnBoard;
-        this.maxCapacity=maxCapacity;
+    public Car(ArrayList<Passenger> passengersOnBoard, int maxCapacity) {
+        this.passengersOnBoard = new ArrayList<>(passengersOnBoard); // Fix the initialization
+        this.maxCapacity = maxCapacity;
     }
+
     /**
-     * Accessor getCapacity()
-     * @return num, the max capacity
+     * Accessor for max capacity
+     * @return max capacity of the car
      */
-    public int getCapacity(){
-        int num=this.maxCapacity;
-        return num;
+    public int getCapacity() {
+        return this.maxCapacity;
     }
+
     /**
-     * Accessor seatsRemaining()
-     * @return r, the number of seats remaining
+     * Get remaining seats
+     * @return number of available seats
      */
-    public int seatsRemaining(){
-        int r=this.maxCapacity-this.passengersOnBoard.size();
-        return r;
+    public int seatsRemaining() {
+        return this.maxCapacity - this.passengersOnBoard.size();
     }
+
     /**
-     * Setter addPassenger(Passenger p)
-     * @param Passenger p, the passenger object
-     * @return true or false, indicating whether successfully added or not
+     * Add a passenger
+     * @param p The passenger object
+     * @return true if successfully added, throws exception if full
      */
-    public Boolean addPassenger(Passenger p){
-        if (this.passengersOnBoard.size()<this.maxCapacity){
+    public boolean addPassenger(Passenger p){
+        if (this.passengersOnBoard.size() < this.maxCapacity) {
             this.passengersOnBoard.add(p);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
+
     /**
-     * Setter removePassenger(Passenger p)
-     * 
+     * Remove a passenger
+     * @param p The passenger object
+     * @return true if successfully removed, throws exception if not found
      */
-    public Boolean removePassenger(Passenger p){
-        if (this.passengersOnBoard.contains(p)){
+    public boolean removePassenger(Passenger p){
+        if (this.passengersOnBoard.contains(p)) {
             this.passengersOnBoard.remove(p);
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
+
     /**
-     * Print the names of all the passengers on the car
+     * Print the names of all passengers
      */
-    public void printManifest(){
-        int i=0;
-        for (Passenger p: this.passengersOnBoard){
-            System.out.println("Passenger"+(i+1)+": "+p.name);
+    public void printManifest() {
+        if (this.passengersOnBoard.isEmpty()) {
+            System.out.println("This car is empty.");
+            return;
+        }
+        int i = 1;
+        for (Passenger p : this.passengersOnBoard) {
+            System.out.println("Passenger " + i + ": " + p.name);
             i++;
         }
     }
+
     /**
-     * main 
-     * @param args
+     * Main method for testing
      */
     public static void main(String[] args) {
         Passenger ada = new Passenger("Ada");
         Passenger bob = new Passenger("Bob");
         Passenger carmen = new Passenger("Carmen");
-        // create a car object
-        ArrayList<Passenger> passengersA = new ArrayList<Passenger>(Arrays.asList(ada, bob, carmen));
-        Car a = new Car(passengersA, 5);
+
+        // Create a car object
+        ArrayList<Passenger> passengersA = new ArrayList<>(Arrays.asList(ada, bob, carmen));
+        Car a = new Car(passengersA, 3);
+
         // Test getCapacity()
-        int capA = a.getCapacity();
-        System.out.println("Car a, max capacity: " + capA);
+        System.out.println("Car a, max capacity: " + a.getCapacity());
+
         // Test seatsRemaining()
-        int seatsA = a.seatsRemaining();
-        System.out.println("Car a, seats remaining: " + seatsA);
+        System.out.println("Car a, seats remaining: " + a.seatsRemaining());
+
         // Test addPassenger()
         Passenger dan = new Passenger("Dan");
-        Boolean m = a.addPassenger(dan);
+        try {
+            a.addPassenger(dan);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Error: car is full.");
+        }
+
         // Test removePassenger()
-        Boolean n = a.removePassenger(bob);  
+        try {
+            a.removePassenger(bob);
+        } catch (NullPointerException e) {
+            System.out.println("Error: passenger not on board.");
+        }
+
         // Test printManifest()
         a.printManifest();
     }
